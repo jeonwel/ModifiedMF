@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maharlika Flavors - Dashboard</title>
+
+    <link rel="icon" type="image/png" href="../images/logo.jpg">
+    <link rel="stylesheet" href="../css/salesRec.css">
+    <link rel="stylesheet" href="../css/FontAwesome/all.min.css">
+    <link rel="stylesheet" href="../css/FontAwesome/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="navbar">
+
+        <ul class="menu-list">
+            <li><a href="#" id="dashboard-link"><i class="fa-solid fa-chart-line"></i><span class="text">Dashboard</span></a></li>
+            <li><a href="#" id="categories-link"><i class="fa-solid fa-list"></i><span class="text">Categories</span></a></li>
+            <li><a href="#" id="products-link"><i class="fa-solid fa-utensils"></i><span class="text">Products</span></a></li>
+            <li><a href="#" id="sales-link"><i class="fa-solid fa-coins"></i><span class="text">Sales</span></a></li>
+            <li><a href="#" id="logout"><i class="fa-solid fa-right-from-bracket"></i><span class="text">Logout</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content" id="dashboard-content">
+        <h1>Dashboard</h1>
+        <div class="stats-grid">
+            <div class="card">
+                <h3>Categories</h3>
+                <p>7</p>
+            </div>
+            <div class="card">
+                <h3>Products</h3>
+                <p>27</p>
+            </div>
+            <div class="card">
+                <h3>Orders</h3>
+                <p>13</p>
+            </div>
+            <div class="card">
+                <h3>Total Revenue</h3>
+                <p>P30,000</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Content -->
+    
+    <div id="categories-content" style="display: none;">
+        <h1 class="categories-header">Categories</h1>
+
+        <div class="categories">
+            <button id="categories-btn">Click to View Categories</button>
+        </div>
+    </div>
+
+     <!-- Producs Content -->
+      
+     <div id="products-content" style="display: none;">
+
+        <h1 class="products-header">Products</h1>
+
+        <div class="products">
+            <button id="products-btn">Click to View Products</button>
+        </div>
+
+     </div>
+
+    <!-- Sales Content -->
+    <div class="container" id="revenue-container" style="display: none;">
+        <h1>MAHARLIKA FLAVORS</h1>
+        <h2>REVENUE SUMMARY</h2>
+
+        <!-- Table -->
+        <div class="table-container">
+            <table id="products" class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Order Summary</th>
+                        <th>Dining Preference</th>
+                        <th>Payment Method</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="product_content">
+                    <!-- Dynamic content will go here -->
+                </tbody>
+            </table>
+            <p id="no-orders-message" style="display:none; text-align:center; font-weight:bold;">No orders found.</p>
+        </div>
+    </div>
+
+    <script>
+
+        const productbtn = document.getElementById("products-btn");    
+        
+        productbtn.addEventListener("click", function(){
+            window.location = "../html/products.html"
+        });
+
+        const categoriebtn = document.getElementById("categories-btn"); 
+
+        categoriebtn.addEventListener("click", function(){
+            window.location = "../html/categories.html"
+        });
+
+        // Function to load sales data from localStorage
+        function loadSalesData() {
+            const tableBody = document.getElementById("product_content");
+            const noOrdersMessage = document.getElementById("no-orders-message");
+
+            const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+            tableBody.innerHTML = "";
+
+            if (salesData.length === 0) {
+                noOrdersMessage.style.display = 'block';
+            } else {
+                noOrdersMessage.style.display = 'none';
+
+                const displayedOrderIds = new Set();
+                salesData.forEach((order) => {
+                    if (!displayedOrderIds.has(order.orderId)) {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${order.orderId}</td>
+                            <td>${order.summary}</td>
+                            <td>${order.diningPreference}</td>
+                            <td>${order.paymentMethod}</td>
+                            <td>${order.total}</td>
+                        `;
+                        tableBody.appendChild(row);
+                        displayedOrderIds.add(order.orderId);
+                    }
+                });
+            }
+        }
+
+        window.onload = () => {
+            loadSalesData();
+
+            const userIsLogin = sessionStorage.getItem("user");
+            if (!userIsLogin) {
+                alert("Please Login First!");
+                window.location = "../html/login.html";
+            }
+        };
+
+        document.getElementById("logout").addEventListener("click", () => {
+            sessionStorage.removeItem("user");
+            window.location = "../html/login.html";
+        });
+
+        document.getElementById("sales-link").addEventListener("click", (e) => {
+            e.preventDefault(); // Prevent the default link behavior
+
+            // Hide the dashboard content and show the sales content
+            document.getElementById("dashboard-content").style.display = "none";
+            document.getElementById("products-content").style.display = "none";
+            document.getElementById("revenue-container").style.display = "block";
+            document.getElementById("categoriess-content").style.display = "none";
+        });
+
+        document.getElementById("dashboard-link").addEventListener("click", (e) => {
+            e.preventDefault();
+
+            // Hide the sales content and show the dashboard content
+            document.getElementById("revenue-container").style.display = "none";
+            document.getElementById("products-content").style.display = "none";
+            document.getElementById("dashboard-content").style.display = "block";
+            document.getElementById("categoriess-content").style.display = "none";
+        });
+
+        document.getElementById("products-link").addEventListener("click", (e) => {
+            e.preventDefault();
+
+            // Hide the sales content and show the dashboard content
+            document.getElementById("revenue-container").style.display = "none";
+            document.getElementById("dashboard-content").style.display = "none";
+            document.getElementById("products-content").style.display = "block";
+            document.getElementById("categories-content").style.display = "none";
+        });
+
+        document.getElementById("categories-link").addEventListener("click", (e) => {
+            e.preventDefault();
+
+            // Hide the sales content and show the dashboard content
+            document.getElementById("revenue-container").style.display = "none";
+            document.getElementById("dashboard-content").style.display = "none";
+            document.getElementById("products-content").style.display = "none";
+            document.getElementById("categories-content").style.display = "block";
+        });
+
+        // Add event listeners for other links if you want similar behavior for Categories, Products, etc.
+    </script>
+</body>
+</html>

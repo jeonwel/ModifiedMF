@@ -1,0 +1,84 @@
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 2rem;
+    justify-content: center; /* Center the cards horizontally */
+}
+
+/* Card */
+.card {
+    flex: 1 1 calc(25% - 40px); /* Adjust the width for four cards per row */
+    max-width: 250px; /* Optional: set a max width for each card */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    background: #BB9457;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    color: black;
+}
+
+/* Card Image */
+.card img {
+    width: 150px; /* Set the same width as menu images */
+    height: 150px; /* Set the same height */
+    object-fit: cover; /* Ensures the image covers the area uniformly */
+    border-radius: 8px;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+h3{
+    font-weight: 900;
+    font-family:  'Arial Narrow Bold', sans-serif;
+}
+
+/* Card Description */
+
+.card-price {
+    display: flex;
+    align-items: center; /* Vertically center the price and icon */
+    justify-content: space-between; /* Keeps the price on the left and the plus icon on the right */
+    width: 100%; /* Ensures the container takes the full width of the card */
+    margin-top: auto; /* Pushes the price and icon to the bottom */
+}
+
+.card-price p {
+    font-size: 16px; /* Increased font size for better visibility */
+    margin: 0; /* Remove margin for better alignment */
+    font-weight: 600; /* Make the price bold for emphasis */
+    line-height: 1.5; /* Adjusts the line height for better spacing */
+}
+
+.card-price .price {
+    font-weight: 600; /* Keep the price bold */
+    font-size: 16px; /* Match font size with paragraph */
+}
+
+.card-price i {
+    cursor: pointer;
+    font-size: 20px; /* Increased icon size for better visibility */
+    color: #333;
+}
+
+
+.fa-plus {
+    transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* transform transition */
+    background: #E9EED9;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.fa-plus:hover {
+    color: black; /* Change the color on hover */
+    box-shadow: rgb(0, 0, 0 / 30%) 0px 4px 4px, rgb(7, 6, 6) 0px 0px 0px 3px; /* Existing shadow effect */
+    transform: scale(1.1); /* Slightly enlarge the icon on hover */
+}
